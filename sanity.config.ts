@@ -9,8 +9,8 @@ const singletonTypes = new Set(['aboutPage'])
 export default defineConfig({
   name: 'default',
   title: 'Spouses Selling Houses',
-  projectId: 'nxinrv46',
-  dataset: 'staging',
+  projectId: process.env.PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.PUBLIC_SANITY_DATASET,
   plugins: [
     structureTool({
       structure: (S) =>
