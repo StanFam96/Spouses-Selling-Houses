@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Contact">
+  <section class="bg-blue-50 py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h1 class="mb-4 text-4xl font-bold text-slate-800">Get in Touch</h1>
+      <p class="text-lg text-slate-600">We'd love to hear from you. Reach out and let's find your dream home.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="grid gap-12 md:grid-cols-2">
+        <div>
+          <form class="space-y-5">
+            <div>
+              <label for="name" class="mb-1 block text-sm font-medium text-slate-700">Name</label>
+              <input type="text" id="name" class="w-full rounded-lg border border-blue-200 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="Your name" />
+            </div>
+            <div>
+              <label for="email" class="mb-1 block text-sm font-medium text-slate-700">Email</label>
+              <input type="email" id="email" class="w-full rounded-lg border border-blue-200 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="you@example.com" />
+            </div>
+            <div>
+              <label for="message" class="mb-1 block text-sm font-medium text-slate-700">Message</label>
+              <textarea id="message" rows="5" class="w-full rounded-lg border border-blue-200 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="How can we help?"></textarea>
+            </div>
+            <button type="submit" class="rounded-lg bg-blue-700 px-8 py-3 text-sm font-semibold text-white transition hover:bg-blue-800">Send Message</button>
+          </form>
+        </div>
+        <div class="space-y-6">
+          <div class="rounded-xl border border-blue-100 bg-blue-50 p-6">
+            <h3 class="mb-3 text-lg font-semibold text-slate-800">Office</h3>
+            <p class="text-sm text-slate-600">555 Real Estate Avenue<br />Suite 100<br />Springfield, ST 12345</p>
+          </div>
+          <div class="rounded-xl border border-blue-100 bg-blue-50 p-6">
+            <h3 class="mb-3 text-lg font-semibold text-slate-800">Phone</h3>
+            <p class="text-sm text-slate-600">(555) 123-4567</p>
+          </div>
+          <div class="rounded-xl border border-blue-100 bg-blue-50 p-6">
+            <h3 class="mb-3 text-lg font-semibold text-slate-800">Email</h3>
+            <p class="text-sm text-slate-600">hello@spousessellinghouses.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

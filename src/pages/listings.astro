@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getListings, urlFor } from '../utils/sanity';
+
+const listings = await getListings();
+---
+<Layout title="Listings">
+  <section class="bg-blue-50 py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h1 class="mb-4 text-4xl font-bold text-slate-800">Featured Listings</h1>
+      <p class="text-lg text-slate-600">Explore our hand-picked selection of available properties.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="mx-auto max-w-6xl px-4">
+      {listings.length === 0 ? (
+        <p class="py-12 text-center text-slate-500">No listings available yet. Check back soon!</p>
+      ) : (
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {listings.map((listing) => {
+            const imageUrl = listing.image
+              ? urlFor(listing.image).width(600).height(400).fit('crop').url()
+              : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?fm=jpg&q=60&w=800';
+            return (
+              <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm transition hover:shadow-md">
+                <img src={imageUrl} alt={listing.image?.alt ?? listing.address} class="h-48 w-full object-cover" />
+                <div class="p-5">
+                  <h3 class="mb-1 text-xl font-semibold text-slate-800">{listing.address}</h3>
+                  <p class="mb-2 text-2xl font-bold text-blue-700">${listing.price.toLocaleString()}</p>
+                  <p class="mb-3 text-sm text-slate-500">{listing.beds} bed &bull; {listing.baths} bath &bull; {listing.sqft.toLocaleString()} sqft</p>
+                  {listing.description && (
+                    <p class="text-sm text-slate-600">{listing.description}</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

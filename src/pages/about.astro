@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getAboutPage, urlFor } from '../utils/sanity';
+
+const page = await getAboutPage();
+const heroTitle = page?.heroTitle ?? 'Meet the Stanleys';
+const heroSubtitle = page?.heroSubtitle ?? 'A husband-and-wife team dedicated to helping you find the perfect home.';
+const agents = page?.agents ?? [];
+const quoteTitle = page?.quoteTitle ?? "Together, We're Better";
+const quoteText = page?.quoteText ?? '"Real estate is personal. We treat every client the way we\'d want to be treated — with honesty, patience, and a whole lot of heart."';
+---
+<Layout title="About">
+  <section class="bg-blue-50 py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h1 class="mb-4 text-4xl font-bold text-slate-800">{heroTitle}</h1>
+      {heroSubtitle && <p class="text-lg text-slate-600">{heroSubtitle}</p>}
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="mx-auto max-w-4xl px-4">
+      {agents.map((agent, i) => {
+        const isReversed = i % 2 === 1;
+        const imageUrl = agent.image
+          ? urlFor(agent.image).width(600).height(600).fit('crop').url()
+          : null;
+        return (
+          <div class={`grid items-center gap-10 md:grid-cols-2 ${i > 0 ? 'mt-16' : ''}`}>
+            {isReversed && (
+              <div class="order-last md:order-first">
+                <h2 class="mb-2 text-3xl font-bold text-slate-800">{agent.name}</h2>
+                <p class="mb-4 text-sm font-medium uppercase tracking-wider text-blue-600">{agent.role}</p>
+                {agent.bio && <p class="leading-relaxed text-slate-600">{agent.bio}</p>}
+              </div>
+            )}
+            {imageUrl ? (
+              <img src={imageUrl} alt={agent.image?.alt ?? agent.name} class="rounded-xl shadow-lg" />
+            ) : (
+              <div class="flex h-80 items-center justify-center rounded-xl bg-blue-100 text-slate-400">No photo</div>
+            )}
+            {!isReversed && (
+              <div>
+                <h2 class="mb-2 text-3xl font-bold text-slate-800">{agent.name}</h2>
+                <p class="mb-4 text-sm font-medium uppercase tracking-wider text-blue-600">{agent.role}</p>
+                {agent.bio && <p class="leading-relaxed text-slate-600">{agent.bio}</p>}
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  </section>
+
+  {quoteText && (
+    <section class="bg-blue-700 py-16 text-white">
+      <div class="mx-auto max-w-4xl px-4 text-center">
+        {quoteTitle && <h2 class="mb-4 text-3xl font-bold">{quoteTitle}</h2>}
+        <p class="mx-auto max-w-2xl text-lg text-blue-100">{quoteText}</p>
+      </div>
+    </section>
+  )}
+</Layout>
