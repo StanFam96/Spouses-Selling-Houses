@@ -18,21 +18,15 @@ const LISTINGS_QUERY = defineQuery(`*[_type == "listing" && status == "available
   }
 }`)
 
-const ABOUT_PAGE_QUERY = defineQuery(`*[_type == "aboutPage"][0]{
-  heroTitle,
-  heroSubtitle,
-  agents[]->{
-    _id,
-    name,
-    role,
-    bio,
-    "image": image {
-      asset->{ _id, url },
-      alt
-    }
-  },
-  quoteTitle,
-  quoteText
+const AGENTS_QUERY = defineQuery(`*[_type == "agent"] | order(_createdAt desc){
+  _id,
+  name,
+  role,
+  bio,
+  "image": image {
+    asset->{ _id, url },
+    alt
+  }
 }`)
 
 export interface Listing {
@@ -61,20 +55,12 @@ export interface Agent {
   } | null
 }
 
-export interface AboutPage {
-  heroTitle: string
-  heroSubtitle: string | null
-  agents: Agent[]
-  quoteTitle: string | null
-  quoteText: string | null
-}
-
 export async function getListings(): Promise<Listing[]> {
   return await sanityClient.fetch(LISTINGS_QUERY)
 }
 
-export async function getAboutPage(): Promise<AboutPage | null> {
-  return await sanityClient.fetch(ABOUT_PAGE_QUERY)
+export async function getAgents(): Promise<Agent[]> {
+  return await sanityClient.fetch(AGENTS_QUERY)
 }
 
 const builder = createImageUrlBuilder(sanityClient)
