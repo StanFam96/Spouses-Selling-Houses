@@ -11,11 +11,13 @@
     "sanity-deploy": "sanity deploy"
   },
   "dependencies": {
+    "@astrojs/netlify": "^6.6.5",
     "@astrojs/react": "^4.4.2",
     "@astrojs/tailwind": "^6.0.2",
     "@sanity/astro": "^3.4.1",
     "@sanity/image-url": "^2.1.1",
     "astro": "^5.18.2",
+    "googleapis": "^173.0.0",
     "groq": "^6.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

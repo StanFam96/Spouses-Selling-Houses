@@ -3,6 +3,7 @@ import { loadEnv } from 'vite';
 import tailwind from '@astrojs/tailwind';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
+import netlify from '@astrojs/netlify';
 
 const env = loadEnv(
   process.env.NODE_ENV ?? 'development',
@@ -20,6 +21,7 @@ if (!PUBLIC_SANITY_PROJECT_ID || !PUBLIC_SANITY_DATASET) {
 }
 
 export default defineConfig({
+  adapter: netlify(),
   vite: {
     optimizeDeps: {
       include: ['axobject-query'],
