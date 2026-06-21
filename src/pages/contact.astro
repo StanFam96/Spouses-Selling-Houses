@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="Contact">
+<Layout title="Contact" description="Get in touch with Keith & Kathleen Stanley. Based in Massapequa Park, serving all of Long Island. Call or email us today.">
   <section class="bg-blue-50 py-16">
     <div class="mx-auto max-w-4xl px-4 text-center">
       <h1 class="mb-4 text-4xl font-bold text-slate-800">Get in Touch</h1>
@@ -30,6 +30,10 @@ import Layout from '../layouts/Layout.astro';
             <button type="submit" class="rounded-lg bg-blue-700 px-8 py-3 text-sm font-semibold text-white transition hover:bg-blue-800">Send Message</button>
           </form>
           <script>
+            const msg = new URLSearchParams(window.location.search).get('message');
+            const sanitize = (s) => s.replace(/[<>]/g, '');
+            if (msg) document.getElementById('message').value = sanitize(msg);
+
             document.querySelector("form[name=contact]").addEventListener("submit", async (e) => {
               e.preventDefault();
               const form = e.currentTarget;
@@ -47,16 +51,16 @@ import Layout from '../layouts/Layout.astro';
         </div>
         <div class="space-y-6">
           <div class="rounded-xl border border-blue-100 bg-blue-50 p-6">
-            <h3 class="mb-3 text-lg font-semibold text-slate-800">Office</h3>
-            <p class="text-sm text-slate-600">555 Real Estate Avenue<br />Suite 100<br />Springfield, ST 12345</p>
+            <h3 class="mb-3 text-lg font-semibold text-slate-800">Keith Stanley</h3>
+            <p class="text-sm text-slate-600">516-582-7795<br />kstanley@signaturepremier.com</p>
           </div>
           <div class="rounded-xl border border-blue-100 bg-blue-50 p-6">
-            <h3 class="mb-3 text-lg font-semibold text-slate-800">Phone</h3>
-            <p class="text-sm text-slate-600">(555) 123-4567</p>
+            <h3 class="mb-3 text-lg font-semibold text-slate-800">Kathleen Stanley</h3>
+            <p class="text-sm text-slate-600">516-582-7653<br />kastanley@signaturepremier.com</p>
           </div>
           <div class="rounded-xl border border-blue-100 bg-blue-50 p-6">
-            <h3 class="mb-3 text-lg font-semibold text-slate-800">Email</h3>
-            <p class="text-sm text-slate-600">hello@spousessellinghouses.com</p>
+            <h3 class="mb-3 text-lg font-semibold text-slate-800">Location</h3>
+            <p class="text-sm text-slate-600">Based in Massapequa Park</p>
           </div>
         </div>
       </div>

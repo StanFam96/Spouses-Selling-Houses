@@ -1,7 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { schemaTypes } from './sanity/schemaTypes'
-import { HomeIcon, UserIcon } from '@sanity/icons'
+import { HomeIcon, UserIcon, BlockquoteIcon } from '@sanity/icons'
 
 export default defineConfig({
   name: 'default',
@@ -15,6 +15,7 @@ export default defineConfig({
           .title('Content')
           .items([
             S.documentTypeListItem('agent').title('Agents').icon(UserIcon),
+            S.documentTypeListItem('testimonial').title('Testimonials').icon(BlockquoteIcon),
             S.divider(),
             S.documentTypeListItem('listing').title('Listings').icon(HomeIcon),
           ]),

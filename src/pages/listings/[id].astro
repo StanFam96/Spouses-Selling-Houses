@@ -1,0 +1,30 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import { getListing, urlFor } from '../../utils/sanity';
+
+const { id } = Astro.params;
+const listing = await getListing(id!);
+
+if (!listing) {
+  return Astro.redirect('/listings');
+}
+const imageUrl = listing.image
+  ? urlFor(listing.image).width(800).height(500).fit('crop').url()
+  : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?fm=jpg&q=60&w=800';
+const interestHref = `/contact?message=${encodeURIComponent(`I am interested in ${listing.address} ($${listing.price.toLocaleString()}). Please send me more information.`)}`;
+---
+<Layout title={listing.address} description={`${listing.address} — ${listing.beds} bed, ${listing.baths} bath, ${listing.sqft.toLocaleString()} sqft — $${listing.price.toLocaleString()}. `} image={imageUrl}>
+  <section class="py-16">
+    <div class="mx-auto max-w-4xl px-4">
+      <a href="/listings" class="mb-6 inline-flex items-center text-sm text-blue-600 hover:text-blue-800">&larr; Back to Listings</a>
+      <img src={imageUrl} alt={listing.image?.alt ?? listing.address} class="mb-8 w-full rounded-2xl object-cover shadow-lg" />
+      <h1 class="mb-2 text-3xl font-bold text-slate-800 md:text-4xl">{listing.address}</h1>
+      <p class="mb-4 text-3xl font-bold text-blue-700">${listing.price.toLocaleString()}</p>
+      <p class="mb-6 text-sm text-slate-500">{listing.beds} bed &bull; {listing.baths} bath &bull; {listing.sqft.toLocaleString()} sqft</p>
+      {listing.description && <p class="mb-8 leading-relaxed text-slate-600">{listing.description}</p>}
+      <a href={interestHref} class="inline-block rounded-lg bg-blue-700 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-blue-800">I am interested in this home</a>
+    </div>
+  </section>
+</Layout>

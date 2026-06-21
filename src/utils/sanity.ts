@@ -18,7 +18,33 @@ const LISTINGS_QUERY = defineQuery(`*[_type == "listing" && status == "available
   }
 }`)
 
-const AGENTS_QUERY = defineQuery(`*[_type == "agent"] | order(_createdAt desc){
+const LISTING_QUERY = defineQuery(`*[_type == "listing" && _id == $id][0]{
+  _id,
+  address,
+  price,
+  beds,
+  baths,
+  sqft,
+  description,
+  status,
+  "image": image {
+    asset->{ _id, url },
+    alt
+  }
+}`)
+
+const TESTIMONIALS_QUERY = defineQuery(`*[_type == "testimonial"]{
+  _id,
+  name,
+  town,
+  quote,
+  "image": image {
+    asset->{ _id, url },
+    alt
+  }
+}`)
+
+const AGENTS_QUERY = defineQuery(`*[_type == "agent"] | order(order asc){
   _id,
   name,
   role,
@@ -55,8 +81,27 @@ export interface Agent {
   } | null
 }
 
+export interface Testimonial {
+  _id: string
+  name: string
+  town: string | null
+  quote: string | null
+  image: {
+    asset: { _id: string; url: string }
+    alt: string | null
+  } | null
+}
+
+export async function getTestimonials(): Promise<Testimonial[]> {
+  return await sanityClient.fetch(TESTIMONIALS_QUERY)
+}
+
 export async function getListings(): Promise<Listing[]> {
   return await sanityClient.fetch(LISTINGS_QUERY)
+}
+
+export async function getListing(id: string): Promise<Listing | null> {
+  return await sanityClient.fetch(LISTING_QUERY, { id })
 }
 
 export async function getAgents(): Promise<Agent[]> {

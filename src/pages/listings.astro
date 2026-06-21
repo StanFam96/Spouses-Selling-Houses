@@ -4,7 +4,7 @@ import { getListings, urlFor } from '../utils/sanity';
 
 const listings = await getListings();
 ---
-<Layout title="Listings">
+<Layout title="Listings" description="Browse featured homes for sale on Long Island. Keith & Kathleen Stanley showcase hand-picked properties from Massapequa to Montauk.">
   <section class="bg-blue-50 py-16">
     <div class="mx-auto max-w-4xl px-4 text-center">
       <h1 class="mb-4 text-4xl font-bold text-slate-800">Featured Listings</h1>
@@ -23,8 +23,8 @@ const listings = await getListings();
               ? urlFor(listing.image).width(600).height(400).fit('crop').url()
               : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?fm=jpg&q=60&w=800';
             return (
-              <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm transition hover:shadow-md">
-                <img src={imageUrl} alt={listing.image?.alt ?? listing.address} class="h-48 w-full object-cover" />
+              <a href={`/listings/${listing._id}`} class="block overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm transition hover:shadow-md">
+                <img src={imageUrl} alt={listing.image?.alt ?? listing.address} class="h-48 w-full cursor-pointer object-cover" />
                 <div class="p-5">
                   <h3 class="mb-1 text-xl font-semibold text-slate-800">{listing.address}</h3>
                   <p class="mb-2 text-2xl font-bold text-blue-700">${listing.price.toLocaleString()}</p>
@@ -33,7 +33,7 @@ const listings = await getListings();
                     <p class="text-sm text-slate-600">{listing.description}</p>
                   )}
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>

@@ -4,7 +4,7 @@ import { getAgents, urlFor } from '../utils/sanity';
 
 const agents = await getAgents();
 ---
-<Layout title="About">
+<Layout title="About" description="Meet Keith & Kathleen Stanley — a husband-and-wife real estate team serving Long Island with honesty, experience, and heart.">
   <section class="bg-blue-50 py-16">
     <div class="mx-auto max-w-4xl px-4 text-center">
       <h1 class="mb-4 text-4xl font-bold text-slate-800">Meet the Stanleys</h1>
@@ -28,7 +28,7 @@ const agents = await getAgents();
                 <div class="order-last md:order-first">
                   <h2 class="mb-2 text-3xl font-bold text-slate-800">{agent.name}</h2>
                   <p class="mb-4 text-sm font-medium uppercase tracking-wider text-blue-600">{agent.role}</p>
-                  {agent.bio && <p class="leading-relaxed text-slate-600">{agent.bio}</p>}
+                  {agent.bio && agent.bio.split('\n\n').map(p => <p class="mb-4 leading-relaxed text-slate-600">{p}</p>)}
                 </div>
               )}
               {imageUrl ? (
@@ -40,7 +40,7 @@ const agents = await getAgents();
                 <div>
                   <h2 class="mb-2 text-3xl font-bold text-slate-800">{agent.name}</h2>
                   <p class="mb-4 text-sm font-medium uppercase tracking-wider text-blue-600">{agent.role}</p>
-                  {agent.bio && <p class="leading-relaxed text-slate-600">{agent.bio}</p>}
+                  {agent.bio && agent.bio.split('\n\n').map(p => <p class="mb-4 leading-relaxed text-slate-600">{p}</p>)}
                 </div>
               )}
             </div>
@@ -50,10 +50,39 @@ const agents = await getAgents();
     </div>
   </section>
 
-  <section class="bg-blue-700 py-16 text-white">
-    <div class="mx-auto max-w-4xl px-4 text-center">
-      <h2 class="mb-4 text-3xl font-bold">Together, We're Better</h2>
-      <p class="mx-auto max-w-2xl text-lg text-blue-100">Real estate is personal. We treat every client the way we'd want to be treated — with honesty, patience, and a whole lot of heart.</p>
+  <section class="bg-blue-700 py-20 text-white">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="flex flex-col items-center gap-12 md:flex-row">
+        <div class="w-full md:w-1/2">
+          <h2 class="mb-6 text-3xl font-bold md:text-4xl">Experience You Can Trust in Real Estate</h2>
+          <p class="mb-6 text-lg leading-relaxed text-blue-100">
+            As Long Islanders, we're dedicated to understanding the unique needs of our community. We believe in
+            transparency, integrity, and building lasting relationships. Our commitment is to guide you through every
+            step of the buying or selling process, ensuring your experience is as smooth as possible. Let's work
+            together to make your real estate journey a success.
+          </p>
+        </div>
+        <div class="w-full md:w-1/2">
+          <img src="/images/long-island-map.png" alt="Map of Long Island" class="rounded-2xl shadow-xl" />
+        </div>
+      </div>
+      <div class="mt-16 grid gap-8 md:grid-cols-2">
+        <div class="rounded-xl border border-blue-500/30 bg-blue-800/50 p-8">
+          <h3 class="mb-3 text-xl font-semibold">Local Expertise</h3>
+          <p class="leading-relaxed text-blue-200">
+            We know our neighborhoods from Long Island City to Montauk inside and out. North or South Shore. Whether
+            you're looking to buy your first home or sell your property, we provide personalized support tailored to
+            your specific goals.
+          </p>
+        </div>
+        <div class="rounded-xl border border-blue-500/30 bg-blue-800/50 p-8">
+          <h3 class="mb-3 text-xl font-semibold">Community Commitment</h3>
+          <p class="leading-relaxed text-blue-200">
+            We believe in giving back to the community that supports us. We're involved in local initiatives and strive
+            to make our area a better place to live for everyone.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </Layout>

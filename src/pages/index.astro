@@ -1,7 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getTestimonials, urlFor } from '../utils/sanity';
+
+const testimonials = await getTestimonials();
 ---
-<Layout title="Home">
+<Layout title="Home" description="Keith & Kathleen Stanley are your trusted Long Island real estate agents. Browse homes for sale, explore our services, and start your journey today.">
   <section class="bg-gradient-to-br from-blue-600 to-blue-800 py-24 text-white">
     <div class="mx-auto max-w-4xl px-4 text-center">
       <h1 class="mb-4 text-5xl font-bold md:text-6xl">Spouses Selling Houses</h1>
@@ -10,26 +13,79 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
+  <!-- Meet Keith & Kathleen Section -->
   <section class="py-20">
     <div class="mx-auto max-w-6xl px-4">
-      <h2 class="mb-12 text-center text-3xl font-bold text-slate-800">Why Choose Us?</h2>
-      <div class="grid gap-8 md:grid-cols-3">
-        <div class="rounded-xl border border-blue-100 p-6 text-center shadow-sm">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-2xl text-blue-700">🏠</div>
-          <h3 class="mb-2 text-xl font-semibold text-slate-800">Local Experts</h3>
-          <p class="text-sm text-slate-600">Deep knowledge of the neighborhoods you care about most.</p>
+      <div class="flex flex-col items-center gap-12 md:flex-row">
+        <div class="w-full md:w-1/2">
+          <img
+            src="/images/keith-kathleen.jpg"
+            alt="Keith and Kathleen"
+            class="rounded-2xl shadow-xl"
+          />
         </div>
-        <div class="rounded-xl border border-blue-100 p-6 text-center shadow-sm">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-2xl text-blue-700">🤝</div>
-          <h3 class="mb-2 text-xl font-semibold text-slate-800">Personal Service</h3>
-          <p class="text-sm text-slate-600">We treat every client like family from first handshake to closing day.</p>
-        </div>
-        <div class="rounded-xl border border-blue-100 p-6 text-center shadow-sm">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-2xl text-blue-700">📈</div>
-          <h3 class="mb-2 text-xl font-semibold text-slate-800">Proven Results</h3>
-          <p class="text-sm text-slate-600">Hundreds of happy homeowners and counting.</p>
+        <div class="w-full md:w-1/2">
+          <h2 class="mb-4 text-3xl font-bold text-slate-800 md:text-4xl">Hey Long Island, we're Keith & Kathleen!</h2>
+          <p class="mb-4 text-lg leading-relaxed text-slate-600">
+            As fellow locals, we know this island inside and out — from the best bagel spots in Suffolk to the hidden
+            gems of Nassau. Whether you're buying your first home, upgrading for a growing family, or downsizing for
+            retirement, we're here to make the journey feel effortless.
+          </p>
+          <p class="text-lg leading-relaxed text-slate-600">
+            Let's grab a coffee and talk about what you're looking for. Your next chapter starts right here on Long Island.
+          </p>
+          <a href="/contact" class="mt-6 inline-block rounded-lg bg-blue-600 px-8 py-3 text-lg font-semibold text-white shadow-lg transition hover:bg-blue-700">Let's Talk</a>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Our Key Services Section -->
+  <section class="py-20">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="mb-12 text-center text-3xl font-bold text-slate-800">Our Key Services</h2>
+      <div class="grid gap-8 md:grid-cols-2">
+        <a href="/contact" class="group rounded-xl border border-blue-100 p-8 shadow-sm transition hover:shadow-md">
+          <h3 class="mb-3 text-xl font-semibold text-slate-800 group-hover:text-blue-700">Home Buying Help</h3>
+          <p class="text-sm leading-relaxed text-slate-600">We guide you through every step of the home buying process, from finding the right neighborhood to securing financing. Count on us to make your dream home a reality.</p>
+          <p class="mt-4 text-sm font-semibold text-blue-700 group-hover:underline">Get started &rarr;</p>
+        </a>
+        <a href="/contact" class="group rounded-xl border border-blue-100 p-8 shadow-sm transition hover:shadow-md">
+          <h3 class="mb-3 text-xl font-semibold text-slate-800 group-hover:text-blue-700">Property Selling</h3>
+          <p class="text-sm leading-relaxed text-slate-600">We work diligently to market your property and negotiate the best possible price. Let us take the stress out of selling your home.</p>
+          <p class="mt-4 text-sm font-semibold text-blue-700 group-hover:underline">Get started &rarr;</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  {testimonials.length > 0 && (
+    <section class="bg-blue-50 py-20">
+      <div class="mx-auto max-w-6xl px-4">
+        <h2 class="mb-12 text-center text-3xl font-bold text-slate-800">What Our Clients Say</h2>
+        <div class="grid gap-8 md:grid-cols-2">
+          {testimonials.map((t) => {
+            const imgUrl = t.image ? urlFor(t.image).width(120).height(120).fit('crop').url() : null;
+            return (
+              <div class="rounded-xl bg-white p-8 shadow-sm">
+                <div class="mb-4 flex items-center gap-4">
+                  {imgUrl ? (
+                    <img src={imgUrl} alt={t.image?.alt ?? t.name} class="h-14 w-14 rounded-full object-cover" />
+                  ) : (
+                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600">{t.name[0]}</div>
+                  )}
+                  <div>
+                    <p class="font-semibold text-slate-800">{t.name}</p>
+                    {t.town && <p class="text-sm text-slate-500">{t.town}</p>}
+                  </div>
+                </div>
+                {t.quote && <p class="leading-relaxed text-slate-600">&ldquo;{t.quote}&rdquo;</p>}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )}
 </Layout>

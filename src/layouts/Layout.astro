@@ -1,12 +1,31 @@
 ---
 import '../styles/global.css';
-const { title } = Astro.props;
+const {
+  title,
+  description = 'Keith & Kathleen Stanley — Your trusted Long Island real estate partners. Let us help you buy or sell your home.',
+  image = '/images/keith-kathleen.jpg',
+} = Astro.props;
+const siteName = 'Spouses Selling Houses';
+const fullTitle = `${title} | ${siteName}`;
+const url = Astro.url;
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | Spouses Selling Houses</title>
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, url).href} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, url).href} />
   </head>
   <body class="min-h-screen bg-white font-sans text-slate-800">
     <nav class="border-b border-blue-100 bg-white shadow-sm">
@@ -27,12 +46,14 @@ const { title } = Astro.props;
     </main>
     <footer class="bg-blue-900 text-white">
       <div class="mx-auto max-w-6xl px-4 py-10">
-        <div class="grid gap-8 md:grid-cols-3">
-          <div>
-            <h3 class="mb-3 text-lg font-semibold">Spouses Selling Houses</h3>
-            <p class="text-sm text-blue-200">Your trusted real estate partners.</p>
+        <div class="flex flex-col items-center gap-6 md:flex-row md:items-start md:justify-between">
+          <div class="text-center md:text-left">
+            <img src="/images/signature-logo.png" alt="Signature Premier Properties" class="mx-auto mb-4 h-12 w-auto md:mx-0" />
+            <p class="text-lg font-semibold">Keith & Kathleen Stanley</p>
+            <p class="text-sm text-blue-200">Licensed Real Estate Salesperson</p>
+            <p class="mt-1 text-sm text-blue-200">Affiliated with Signature Premier Properties</p>
           </div>
-          <div>
+          <div class="text-center md:text-left">
             <h3 class="mb-3 text-lg font-semibold">Quick Links</h3>
             <div class="flex flex-col gap-2 text-sm text-blue-200">
               <a href="/" class="transition hover:text-white">Home</a>
@@ -41,13 +62,16 @@ const { title } = Astro.props;
               <a href="/contact" class="transition hover:text-white">Contact</a>
             </div>
           </div>
-          <div>
+          <div class="text-center md:text-left">
             <h3 class="mb-3 text-lg font-semibold">Contact</h3>
-            <p class="text-sm text-blue-200">555 Real Estate Ave.<br />Suite 100<br />(555) 123-4567</p>
+            <p class="text-sm text-blue-200">Based in Massapequa Park</p>
+            <p class="mt-2 text-sm text-blue-200"><span class="font-medium text-white">Keith:</span> 516-582-7795<br />kstanley@signaturepremier.com</p>
+            <p class="mt-2 text-sm text-blue-200"><span class="font-medium text-white">Kathleen:</span> 516-582-7653<br />kastanley@signaturepremier.com</p>
           </div>
         </div>
         <div class="mt-8 border-t border-blue-800 pt-6 text-center text-sm text-blue-300">
-          &copy; 2026 Spouses Selling Houses. All rights reserved.
+          <p class="mb-1">Equal Housing Opportunity</p>
+          <p>&copy; 2026 Keith & Kathleen Stanley. All rights reserved.</p>
         </div>
       </div>
     </footer>
