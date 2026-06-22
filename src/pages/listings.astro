@@ -3,41 +3,104 @@ import Layout from '../layouts/Layout.astro';
 import { getListings, urlFor } from '../utils/sanity';
 
 const listings = await getListings();
+const active = listings.filter(l => l.status === 'available');
+const sold = listings.filter(l => l.status === 'sold');
 ---
 <Layout title="Listings" description="Browse featured homes for sale on Long Island. Keith & Kathleen Stanley showcase hand-picked properties from Massapequa to Montauk.">
   <section class="bg-blue-50 py-16">
     <div class="mx-auto max-w-4xl px-4 text-center">
       <h1 class="mb-4 text-4xl font-bold text-slate-800">Featured Listings</h1>
-      <p class="text-lg text-slate-600">Explore our hand-picked selection of available properties.</p>
+      <p class="text-lg text-slate-600">Explore our hand-picked selection of properties.</p>
     </div>
   </section>
 
   <section class="py-16">
     <div class="mx-auto max-w-6xl px-4">
+      <div class="mb-8 flex gap-4 border-b border-slate-200">
+        <button class="tab-btn border-b-2 border-blue-700 px-4 py-2 font-semibold text-blue-700" data-tab="active">Active ({active.length})</button>
+        <button class="tab-btn px-4 py-2 font-semibold text-slate-500 hover:text-slate-700" data-tab="sold">Sold ({sold.length})</button>
+      </div>
+
       {listings.length === 0 ? (
-        <p class="py-12 text-center text-slate-500">No listings available yet. Check back soon!</p>
+        <p class="py-12 text-center text-slate-500">No listings yet. Check back soon!</p>
       ) : (
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {listings.map((listing) => {
-            const imageUrl = listing.image
-              ? urlFor(listing.image).width(600).height(400).fit('crop').url()
-              : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?fm=jpg&q=60&w=800';
-            return (
-              <a href={`/listings/${listing._id}`} class="block overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm transition hover:shadow-md">
-                <img src={imageUrl} alt={listing.image?.alt ?? listing.address} class="h-48 w-full cursor-pointer object-cover" />
-                <div class="p-5">
-                  <h3 class="mb-1 text-xl font-semibold text-slate-800">{listing.address}</h3>
-                  <p class="mb-2 text-2xl font-bold text-blue-700">${listing.price.toLocaleString()}</p>
-                  <p class="mb-3 text-sm text-slate-500">{listing.beds} bed &bull; {listing.baths} bath &bull; {listing.sqft.toLocaleString()} sqft</p>
-                  {listing.description && (
-                    <p class="text-sm text-slate-600">{listing.description}</p>
+        <>
+          <div id="active-listings" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {active.map((listing) => {
+              const img = listing.images?.[0];
+              return (
+                <a href={`/listings/${listing._id}`} class="block overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm transition hover:shadow-md">
+                  {img ? (
+                    <img src={urlFor(img).width(600).height(400).fit('crop').url()} alt={img.alt ?? listing.address} class="h-48 w-full object-cover" />
+                  ) : (
+                    <div class="flex h-48 items-center justify-center bg-slate-100 text-sm text-slate-400">No photos</div>
                   )}
-                </div>
-              </a>
-            );
-          })}
-        </div>
+                  <div class="p-5">
+                    <h3 class="mb-1 text-xl font-semibold text-slate-800">{listing.address}</h3>
+                    <p class="mb-2 text-2xl font-bold text-blue-700">${listing.price.toLocaleString()}</p>
+                    <p class="mb-3 text-sm text-slate-500">{listing.beds} bed &bull; {listing.baths} bath &bull; {listing.sqft.toLocaleString()} sqft</p>
+                    {listing.description && (
+                      <p class="text-sm text-slate-600">{listing.description}</p>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+
+          <div id="sold-listings" class="hidden grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {sold.map((listing) => {
+              const img = listing.images?.[0];
+              return (
+                <a href={`/listings/${listing._id}`} class="block overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm transition hover:shadow-md">
+                  {img ? (
+                    <img src={urlFor(img).width(600).height(400).fit('crop').url()} alt={img.alt ?? listing.address} class="h-48 w-full object-cover" />
+                  ) : (
+                    <div class="flex h-48 items-center justify-center bg-slate-100 text-sm text-slate-400">No photos</div>
+                  )}
+                  <div class="p-5">
+                    <h3 class="mb-1 text-xl font-semibold text-slate-800">{listing.address}</h3>
+                    <p class="mb-2 text-2xl font-bold text-blue-700">${listing.price.toLocaleString()}</p>
+                    <p class="mb-3 text-sm text-slate-500">{listing.beds} bed &bull; {listing.baths} bath &bull; {listing.sqft.toLocaleString()} sqft</p>
+                    <span class="inline-block rounded bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-slate-500">Sold</span>
+                    {listing.description && (
+                      <p class="text-sm text-slate-600">{listing.description}</p>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   </section>
 </Layout>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const activeSection = document.getElementById('active-listings');
+  const soldSection = document.getElementById('sold-listings');
+
+  function showTab(tab) {
+    tabs.forEach(t => {
+      t.classList.remove('border-b-2', 'border-blue-700', 'text-blue-700');
+      t.classList.add('text-slate-500');
+    });
+    const active = document.querySelector(`[data-tab="${tab}"]`);
+    active.classList.add('border-b-2', 'border-blue-700', 'text-blue-700');
+    active.classList.remove('text-slate-500');
+
+    if (tab === 'active') {
+      activeSection?.classList.remove('hidden');
+      soldSection?.classList.add('hidden');
+    } else {
+      soldSection?.classList.remove('hidden');
+      activeSection?.classList.add('hidden');
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => showTab(tab.dataset.tab));
+  });
+</script>

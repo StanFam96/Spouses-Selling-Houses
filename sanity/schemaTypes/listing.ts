@@ -56,15 +56,22 @@ export const listing = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [
         defineField({
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
+          name: 'image',
+          title: 'Image',
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative text',
+            }),
+          ],
         }),
       ],
     }),
@@ -73,13 +80,11 @@ export const listing = defineType({
     select: {
       title: 'address',
       subtitle: 'price',
-      media: 'image',
     },
-    prepare({ title, subtitle, media }) {
+    prepare({ title, subtitle }) {
       return {
         title,
         subtitle: subtitle ? `$${subtitle.toLocaleString()}` : undefined,
-        media,
       }
     },
   },

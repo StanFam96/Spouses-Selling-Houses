@@ -3,7 +3,9 @@ import { defineQuery } from 'groq'
 import { createImageUrlBuilder } from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
-const LISTINGS_QUERY = defineQuery(`*[_type == "listing" && status == "available"] | order(price asc){
+const IMAGE_PROJECTION = `asset->{ _id, url }, alt`
+
+const LISTINGS_QUERY = defineQuery(`*[_type == "listing"] | order(price asc){
   _id,
   address,
   price,
@@ -12,10 +14,7 @@ const LISTINGS_QUERY = defineQuery(`*[_type == "listing" && status == "available
   sqft,
   description,
   status,
-  "image": image {
-    asset->{ _id, url },
-    alt
-  }
+  "images": coalesce(images[]{ ${IMAGE_PROJECTION} }, [image { ${IMAGE_PROJECTION} }])
 }`)
 
 const LISTING_QUERY = defineQuery(`*[_type == "listing" && _id == $id][0]{
@@ -27,10 +26,7 @@ const LISTING_QUERY = defineQuery(`*[_type == "listing" && _id == $id][0]{
   sqft,
   description,
   status,
-  "image": image {
-    asset->{ _id, url },
-    alt
-  }
+  "images": coalesce(images[]{ ${IMAGE_PROJECTION} }, [image { ${IMAGE_PROJECTION} }])
 }`)
 
 const TESTIMONIALS_QUERY = defineQuery(`*[_type == "testimonial"]{
@@ -64,10 +60,10 @@ export interface Listing {
   sqft: number
   description: string | null
   status: 'available' | 'sold'
-  image: {
+  images: Array<{
     asset: { _id: string; url: string }
     alt: string | null
-  } | null
+  }> | null
 }
 
 export interface Agent {
