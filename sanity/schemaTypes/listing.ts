@@ -49,6 +49,7 @@ export const listing = defineType({
       options: {
         list: [
           { title: 'Available', value: 'available' },
+          { title: 'Pending', value: 'pending' },
           { title: 'Sold', value: 'sold' },
         ],
         layout: 'radio',

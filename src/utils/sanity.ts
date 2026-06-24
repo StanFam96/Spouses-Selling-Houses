@@ -59,7 +59,7 @@ export interface Listing {
   baths: number
   sqft: number
   description: string | null
-  status: 'available' | 'sold'
+  status: 'available' | 'pending' | 'sold'
   images: Array<{
     asset: { _id: string; url: string }
     alt: string | null
